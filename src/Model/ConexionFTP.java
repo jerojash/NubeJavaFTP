@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
     import org.apache.commons.net.ftp.FTP;
     import org.apache.commons.net.ftp.FTPClient;    
@@ -59,12 +60,12 @@ public class ConexionFTP {
         }
     }
 
-    public void subirArchivo(String file_dir, String local_filepath){
+    public void subirArchivo(String local_filepath, String remote_filename){
         String remote_working_dir_path = "C:\\Users\\Maria\\Documents\\carpetaftp";
 //        String local_filepath = "C:\\Users\\Angel\\Desktop\\REPO_REDES_PROYECTO\\Carpeta_Conexion_FTP\\hola.txt";
         //nombre_archivo(file_dir);
          
-        String remote_filename = "holaCopia.txt";
+        
 
         try {
             FileInputStream fis = new FileInputStream(local_filepath);
@@ -76,7 +77,8 @@ public class ConexionFTP {
             if ( uploadFile == false ) {
                 throw new Exception("Error al subir el fichero");
             }else{
-                System. out. println("Su archivo ha sido subido con exito al SERVIOR FTP\n");
+                 JOptionPane.showMessageDialog(null,"El archivo "+remote_filename+" fue cargado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+       
             }
             fis.close();
         } catch (Exception eFTPClient) {

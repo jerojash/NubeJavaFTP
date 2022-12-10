@@ -193,7 +193,6 @@ public class JFileChooserMain extends javax.swing.JFrame {
         
         ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.100", "javier", "redes123");
         nuevo.conectar();
-        JOptionPane.showMessageDialog(null,"Se subira el archivo: "+localFile.getFileName(file_dir), "Mensaje",JOptionPane.INFORMATION_MESSAGE);
         nuevo.subirArchivo(file_dir, localFile.getFileName(file_dir));
         nuevo.desconectar();
 
