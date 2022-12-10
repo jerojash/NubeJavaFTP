@@ -59,11 +59,11 @@ public class ConexionFTP {
         }
     }
 
-    public void subirArchivo(String file_dir){
+    public void subirArchivo(String file_dir, String local_filepath){
         String remote_working_dir_path = "C:\\Users\\Maria Gabriela\\Desktop\\Carpeta_conexion_FTP";
 //        String local_filepath = "C:\\Users\\Angel\\Desktop\\REPO_REDES_PROYECTO\\Carpeta_Conexion_FTP\\hola.txt";
         //nombre_archivo(file_dir);
-        String local_filepath = file_dir;
+         
         String remote_filename = "holaCopia.txt";
 
         try {

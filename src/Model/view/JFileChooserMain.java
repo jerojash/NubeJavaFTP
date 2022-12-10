@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Model.view;
-
+import Model.ManejoString;
 import Model.ConexionFTP;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -186,12 +187,15 @@ public class JFileChooserMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_abrirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        ManejoString localFile = new ManejoString();
         String file_dir = this.ruta.getText();
-        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
-        nuevo.conectar();
-        nuevo.subirArchivo(file_dir);
-        nuevo.desconectar();
+        
+        JOptionPane.showMessageDialog(null, localFile.getFileName(file_dir), "mensaje",JOptionPane.INFORMATION_MESSAGE);
+//        
+//        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
+//        nuevo.conectar();
+//        nuevo.subirArchivo(file_dir, localFile.getFileName(file_dir));
+//        nuevo.desconectar();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
