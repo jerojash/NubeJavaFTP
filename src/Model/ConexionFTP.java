@@ -18,6 +18,7 @@ public class ConexionFTP {
     private String ftp; 
     private String user;
     private String password;
+    private String nombre = "";
 
     public ConexionFTP(FTPClient client, String ftp, String user, String password) {
         this.client = client;
@@ -25,20 +26,13 @@ public class ConexionFTP {
         this.user = user;
         this.password = password;
     }
-    
+
     public void conectar(){
-//        // Creando nuestro objeto ClienteFTP
-//        client = new FTPClient();
-//        // Datos para conectar al servidor FTP
-//        ftp = "200.2.14.89"; // También puede ir la IP
-//        user = "javier";
-//        password = "redes123";
- 
         try {
             // Conactando al servidor
             client.connect(ftp);
             System.out.println(client.getReplyString());
- 
+
             // Logueado un usuario (true = pudo conectarse, false = no pudo
             // conectarse)
             boolean login = client.login(user, password);
@@ -48,49 +42,55 @@ public class ConexionFTP {
             }else{
                 System. out. println("No conectado\n");
             }
-            
- 
         } catch (IOException ioe) {
                 System. out. println("No conectado por error\n");
         }
     }
-    
+
     public void desconectar(){
-    // Cerrando sesión
+        // Cerrando sesión
         try {
             client.logout();
             System.out.println(client.getReplyString());
- 
-        
             // Desconectandose con el servidor
             client.disconnect();
         } catch (IOException ex) {
             Logger.getLogger(ConexionFTP.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void subirArchivo(){
-        
-    String remote_working_dir_path = "C:\\1\\vanessa\\javierFTP";
-    String local_filepath = "C:\\Users\\spereira.17\\Documents\\Javier\\Proyectos DTI\\Evidencias RECORD POR POBLACION.xls";
-    String remote_filename = "Evidencias RECORD POR POBLACION.xls";
 
-    
-    try {
-        FileInputStream fis = new FileInputStream(local_filepath);
-        client.enterLocalPassiveMode(); // IMPORTANTE!!!! 
-        client.setFileType(FTP.BINARY_FILE_TYPE);
-        client.changeWorkingDirectory(remote_working_dir_path);
-        boolean uploadFile = client.storeFile(remote_filename,fis);
+    public void subirArchivo(String file_dir){
+        String remote_working_dir_path = "C:\\Users\\Maria Gabriela\\Desktop\\Carpeta_conexion_FTP";
+//        String local_filepath = "C:\\Users\\Angel\\Desktop\\REPO_REDES_PROYECTO\\Carpeta_Conexion_FTP\\hola.txt";
+        //nombre_archivo(file_dir);
+        String local_filepath = file_dir;
+        String remote_filename = "holaCopia.txt";
 
-        if ( uploadFile == false ) {
-            throw new Exception("Error al subir el fichero");
+        try {
+            FileInputStream fis = new FileInputStream(local_filepath);
+            client.enterLocalPassiveMode(); // IMPORTANTE!!!! 
+            client.setFileType(FTP.BINARY_FILE_TYPE);
+            client.changeWorkingDirectory(remote_working_dir_path);
+            boolean uploadFile = client.storeFile(remote_filename,fis);
+
+            if ( uploadFile == false ) {
+                throw new Exception("Error al subir el fichero");
+            }else{
+                System. out. println("Su archivo ha sido subido con exito al SERVIOR FTP\n");
+            }
+            fis.close();
+        } catch (Exception eFTPClient) {
+            // Gestionar el error, mostrar pantalla, reescalar excepcion... etc...
         }
-        fis.close();
-    } catch (Exception eFTPClient) {
-        // Gestionar el error, mostrar pantalla, reescalar excepcion... etc...
-    } 
     }
     
-
+    public void nombre_archivo(String file_dir){
+        int cont = 0;
+ 
+        for (int x = file_dir.length()-1; x>0; x--){            
+            nombre = String.valueOf(file_dir.charAt(x)) + nombre;
+            System. out. println(file_dir.charAt(x)+"\n");
+        }
+        System. out. println(nombre);
+    }
 }

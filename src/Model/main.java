@@ -6,17 +6,10 @@ package Model;
     import org.apache.commons.net.ftp.FTPClient;
 
 public class main {
-
-  
     public static void main(String[] args) {
-        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "200.2.14.89", "javier", "redes123");
-        
+        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
         nuevo.conectar();
-        
-        nuevo.subirArchivo();
-        
-        
+        nuevo.subirArchivo("sss");
         nuevo.desconectar();
     }
-    
 }
