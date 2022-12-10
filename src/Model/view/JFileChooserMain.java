@@ -190,12 +190,12 @@ public class JFileChooserMain extends javax.swing.JFrame {
         ManejoString localFile = new ManejoString();
         String file_dir = this.ruta.getText();
         
-        JOptionPane.showMessageDialog(null, localFile.getFileName(file_dir), "mensaje",JOptionPane.INFORMATION_MESSAGE);
-//        
-//        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
-//        nuevo.conectar();
-//        nuevo.subirArchivo(file_dir, localFile.getFileName(file_dir));
-//        nuevo.desconectar();
+        
+        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.100", "javier", "redes123");
+        nuevo.conectar();
+        JOptionPane.showMessageDialog(null,"Se subira el archivo: "+localFile.getFileName(file_dir), "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+        nuevo.subirArchivo(file_dir, localFile.getFileName(file_dir));
+        nuevo.desconectar();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
