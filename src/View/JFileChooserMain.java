@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.view;
+package View;
 import Model.ManejoString;
 import Model.ConexionFTP;
 import java.io.File;

@@ -15,24 +15,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.net.ftp.FTPReply;
+
     import org.apache.commons.net.ftp.FTP;
     import org.apache.commons.net.ftp.FTPClient;    
 
 public class ConexionFTP {
-    private FTPClient client;   
-    private String ftp; 
-    private String user;
-    private String password;
-    private String nombre = "";
+    static FTPClient client;   
+    static String ftp; 
+    static String user;
+    static String password;
+    static String nombre = "";
 
     public ConexionFTP(FTPClient client, String ftp, String user, String password) {
-        this.client = client;
-        this.ftp = ftp;
-        this.user = user;
-        this.password = password;
+        ConexionFTP.client = client;
+        ConexionFTP.ftp = ftp;
+        ConexionFTP.user = user;
+        ConexionFTP.password = password;
     }
 
-    public void conectar(){
+    public ConexionFTP(){
+        
+    }
+
+    public boolean conectar(){
         try {
             // Conactando al servidor
             client.connect(ftp);
@@ -42,14 +48,18 @@ public class ConexionFTP {
             // conectarse)
             boolean login = client.login(user, password);
             if (login){
-                System. out. println("Conectado\n");
-            System.out.println(client.getReplyString());
+                JOptionPane.showMessageDialog(null,"Conexión exitosa. Mensaje del servidor: \n"+client.getReplyString(), "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            //System.out.println(client.getReplyString());
             }else{
-                System. out. println("No conectado\n");
+                JOptionPane.showMessageDialog(null,"Credenciales incorrectas.", "Error",JOptionPane.ERROR_MESSAGE);
+       
             }
         } catch (IOException ioe) {
-                System. out. println("No conectado por error\n");
+                JOptionPane.showMessageDialog(null,"Error al intentar conectar con el servidor especificado.", "Error",JOptionPane.ERROR_MESSAGE);
+       
         }
+        return false;
     }
 
     public void desconectar(){
@@ -99,7 +109,7 @@ public class ConexionFTP {
             outputStream1.close();
  
             if (success) {
-                System.out.println("El archivo a sido descargado con exito");
+                System.out.println("El archivo ha sido descargado con exito");
             }else{
                 System.out.println("Falla.");
             }
@@ -108,6 +118,23 @@ public class ConexionFTP {
            
         }catch (IOException io){
             System.out.println(io);
+        }
+    }
+    
+    public void crearCarpeta(){
+        String dirToCreate = "/upload123";
+            boolean success;
+        try {
+            success = client.makeDirectory(dirToCreate);
+        
+            //showServerReply(client);
+            if (success) {
+                System.out.println("Successfully created directory: " + dirToCreate);
+            } else {
+                System.out.println("Failed to create directory. See server's reply.");
+            }
+            } catch (IOException ex) {
+            Logger.getLogger(ConexionFTP.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
