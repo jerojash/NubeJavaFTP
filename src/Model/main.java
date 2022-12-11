@@ -9,7 +9,7 @@ public class main {
     public static void main(String[] args) {
         ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.100", "javier", "redes123");
         nuevo.conectar();
-        //nuevo.subirArchivo();
+        nuevo.descargarArchivo();
         nuevo.desconectar();
 
         }

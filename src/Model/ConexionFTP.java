@@ -1,5 +1,7 @@
 
 package Model;
+import java.io.BufferedOutputStream;
+import java.io.File;
     import java.io.FileInputStream;
     import java.io.PrintStream;
     import java.io.IOException;
@@ -7,6 +9,8 @@ package Model;
 import org.apache.commons.net.ftp.FTPFile;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -62,10 +66,6 @@ public class ConexionFTP {
 
     public void subirArchivo(String local_filepath, String remote_filename){
         String remote_working_dir_path = "C:\\Users\\Maria\\Documents\\carpetaftp";
-//        String local_filepath = "C:\\Users\\Angel\\Desktop\\REPO_REDES_PROYECTO\\Carpeta_Conexion_FTP\\hola.txt";
-        //nombre_archivo(file_dir);
-         
-        
 
         try {
             FileInputStream fis = new FileInputStream(local_filepath);
@@ -86,13 +86,28 @@ public class ConexionFTP {
         }
     }
     
-    public void nombre_archivo(String file_dir){
-        int cont = 0;
+    public void descargarArchivo(){
+        try {
+            client.enterLocalPassiveMode();
+            client.setFileType(FTP.BINARY_FILE_TYPE);
  
-        for (int x = file_dir.length()-1; x>0; x--){            
-            nombre = String.valueOf(file_dir.charAt(x)) + nombre;
-            System. out. println(file_dir.charAt(x)+"\n");
+             //APPROACH #1: using retrieveFile(String, OutputStream)
+            String remoteFile1 = "presupuesto.docx"; //Solo se coloca el nombre del archivo, no hace falta con la ruta completa
+            File downloadFile1 = new File("C:\\Users\\Ricardo Fanghella\\Documents\\Proyecto\\presupuesto.docx"); //Donde voy a guardar el archivo
+            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
+            boolean success = client.retrieveFile(remoteFile1, outputStream1);
+            outputStream1.close();
+ 
+            if (success) {
+                System.out.println("El archivo a sido descargado con exito");
+            }else{
+                System.out.println("Falla.");
+            }
+
+           
+           
+        }catch (IOException io){
+            System.out.println(io);
         }
-        System. out. println(nombre);
     }
 }
