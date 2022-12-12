@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.view;
+package View;
 import Model.ManejoString;
 import Model.ConexionFTP;
 import java.io.File;
@@ -199,7 +199,6 @@ public class JFileChooserMain extends javax.swing.JFrame {
         ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
         nuevo.conectar();
         nuevo.subirArchivo(file_dir, file_name);
-        nuevo.desconectar();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

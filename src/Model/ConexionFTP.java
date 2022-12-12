@@ -1,5 +1,6 @@
-
 package Model;
+import java.io.BufferedOutputStream;
+import java.io.File;
     import java.io.FileInputStream;
     import java.io.PrintStream;
     import java.io.IOException;
@@ -7,27 +8,36 @@ package Model;
 import org.apache.commons.net.ftp.FTPFile;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+import org.apache.commons.net.ftp.FTPReply;
 
     import org.apache.commons.net.ftp.FTP;
     import org.apache.commons.net.ftp.FTPClient;    
 
 public class ConexionFTP {
-    private FTPClient client;   
-    private String ftp; 
-    private String user;
-    private String password;
-
+    static FTPClient client;   
+    static String ftp; 
+    static String user;
+    static String password;
+    static String nombre = "";
 
     public ConexionFTP(FTPClient client, String ftp, String user, String password) {
-        this.client = client;
-        this.ftp = ftp;
-        this.user = user;
-        this.password = password;
+        ConexionFTP.client = client;
+        ConexionFTP.ftp = ftp;
+        ConexionFTP.user = user;
+        ConexionFTP.password = password;
     }
 
-    public void conectar(){
+    public ConexionFTP(){
+        
+    }
+
+    public boolean conectar(){
         try {
             // Conactando al servidor
             client.connect(ftp);
@@ -37,14 +47,18 @@ public class ConexionFTP {
             // conectarse)
             boolean login = client.login(user, password);
             if (login){
-                System. out. println("Conectado\n");
-                System.out.println(client.getReplyString());
+                JOptionPane.showMessageDialog(null,"Conexión exitosa. Mensaje del servidor: \n"+client.getReplyString(), "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            //System.out.println(client.getReplyString());
             }else{
-                System. out. println("No conectado\n");
+                JOptionPane.showMessageDialog(null,"Credenciales incorrectas.", "Error",JOptionPane.ERROR_MESSAGE);
+       
             }
         } catch (IOException ioe) {
-                System. out. println("No conectado por error\n");
+                JOptionPane.showMessageDialog(null,"Error al intentar conectar con el servidor especificado.", "Error",JOptionPane.ERROR_MESSAGE);
+       
         }
+        return false;
     }
 
     public void desconectar(){
@@ -59,38 +73,67 @@ public class ConexionFTP {
         }
     }
 
-    public void subirArchivo(String file_dir,String file_name){
-        String remote_working_dir_path = "C:\\Users\\Maria Gabriela\\Desktop\\Carpeta_conexion_FTP";
-        
+    public void subirArchivo(String local_filepath, String remote_filename){
+        String remote_working_dir_path = "C:\\Users\\Maria\\Documents\\carpetaftp";
+
         try {
-            FileInputStream fis = new FileInputStream(file_dir);
+            FileInputStream fis = new FileInputStream(local_filepath);
             client.enterLocalPassiveMode(); // IMPORTANTE!!!! 
             client.setFileType(FTP.BINARY_FILE_TYPE);
             client.changeWorkingDirectory(remote_working_dir_path);
-            boolean uploadFile = client.storeFile(file_name,fis);
+            boolean uploadFile = client.storeFile(remote_filename,fis);
 
             if ( uploadFile == false ) {
                 throw new Exception("Error al subir el fichero");
             }else{
-                System. out. println("Su archivo ha sido subido con exito al SERVIOR FTP\n");
+                 JOptionPane.showMessageDialog(null,"El archivo "+remote_filename+" fue cargado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+       
             }
             fis.close();
         } catch (Exception eFTPClient) {
-            System.err.println("Error: " + eFTPClient.getMessage());
-            // Gestionar el error, mostrar pantalla, reescalar excepcion... etc...
+                System. out. println(eFTPClient);
         }
     }
     
-    public void traer_archivos_de_servidor_ftp(){
+    public void descargarArchivo(){
         try {
-            FTPFile[] archivos = client.listFiles();
-            System.out.println("\nArchivos en la raíz:");
-            for (FTPFile archivo : archivos) {
-                System.out.println(archivo.getName()); 
+            client.enterLocalPassiveMode();
+            client.setFileType(FTP.BINARY_FILE_TYPE);
+ 
+             //APPROACH #1: using retrieveFile(String, OutputStream)
+            String remoteFile1 = "presupuesto.docx"; //Solo se coloca el nombre del archivo, no hace falta con la ruta completa
+            File downloadFile1 = new File("C:\\Users\\Ricardo Fanghella\\Documents\\Proyecto\\presupuesto.docx"); //Donde voy a guardar el archivo
+            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
+            boolean success = client.retrieveFile(remoteFile1, outputStream1);
+            outputStream1.close();
+ 
+            if (success) {
+                System.out.println("El archivo ha sido descargado con exito");
+            }else{
+                System.out.println("Falla.");
             }
-        } catch (IOException ex) {
+
+           
+           
+        }catch (IOException io){
+            System.out.println(io);
+        }
+    }
+    
+    public void crearCarpeta(){
+        String dirToCreate = "/upload123";
+            boolean success;
+        try {
+            success = client.makeDirectory(dirToCreate);
+        
+            //showServerReply(client);
+            if (success) {
+                System.out.println("Successfully created directory: " + dirToCreate);
+            } else {
+                System.out.println("Failed to create directory. See server's reply.");
+            }
+            } catch (IOException ex) {
             Logger.getLogger(ConexionFTP.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
- 
 }
