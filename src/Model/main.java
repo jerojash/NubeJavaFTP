@@ -1,15 +1,18 @@
 package Model;
 import View.Login;
 import SQL.SQLConnection;
+import java.io.File;
     import java.io.PrintStream;
     import java.io.IOException;
 
     import org.apache.commons.net.ftp.FTPClient;
 
 public class main {
-    public static void main(String[] args) {
-//        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.100", "javier", "redes123");
-//        nuevo.conectar();
+    public static void main(String[] args) throws IOException {
+        //ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.100", "javier", "redes123");
+        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
+        nuevo.conectar();
+        nuevo.listar_archivos_en_servidor();
 //        nuevo.crearCarpeta();
 //        nuevo.desconectar();
 

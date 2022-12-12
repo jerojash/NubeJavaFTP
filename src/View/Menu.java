@@ -5,6 +5,7 @@
  */
 package View;
 
+import java.io.File;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,7 +20,21 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
     }
+    public void mostrar_archivos_carpeta(){
+        String sCarpAct = System.getProperty("user.dir");
+        File carpeta = new File(sCarpAct);
 
+        String[] listado = carpeta.list();
+        if (listado == null || listado.length == 0) {
+            System.out.println("No hay elementos dentro de la carpeta actual");
+            return;
+        }
+        else {
+            for (int i=0; i< listado.length; i++) {
+                System.out.println(listado[i]);
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,7 +51,8 @@ public class Menu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btn_upload = new javax.swing.JButton();
+        btn_option = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -82,22 +98,39 @@ public class Menu extends javax.swing.JFrame {
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, -1));
 
-        jButton1.setBackground(new java.awt.Color(10, 144, 203));
-        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/upload_icon.png"))); // NOI18N
-        jButton1.setBorder(null);
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setFocusPainted(false);
-        jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/upload_icon_G.png"))); // NOI18N
-        jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/upload_icon_G.png"))); // NOI18N
-        jButton1.setVerifyInputWhenFocusTarget(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_upload.setBackground(new java.awt.Color(10, 144, 203));
+        btn_upload.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btn_upload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/upload_icon.png"))); // NOI18N
+        btn_upload.setBorder(null);
+        btn_upload.setBorderPainted(false);
+        btn_upload.setContentAreaFilled(false);
+        btn_upload.setFocusPainted(false);
+        btn_upload.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/upload_icon_G.png"))); // NOI18N
+        btn_upload.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/upload_icon_G.png"))); // NOI18N
+        btn_upload.setVerifyInputWhenFocusTarget(false);
+        btn_upload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_uploadActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 100, 60));
+        jPanel3.add(btn_upload, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 10, 100, 60));
+
+        btn_option.setBackground(new java.awt.Color(10, 144, 203));
+        btn_option.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btn_option.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/options_icon.png"))); // NOI18N
+        btn_option.setBorder(null);
+        btn_option.setBorderPainted(false);
+        btn_option.setContentAreaFilled(false);
+        btn_option.setFocusPainted(false);
+        btn_option.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/options_icon_G.png"))); // NOI18N
+        btn_option.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/options_icon_G.png"))); // NOI18N
+        btn_option.setVerifyInputWhenFocusTarget(false);
+        btn_option.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_optionActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btn_option, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, 110, 70));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 660, 430));
 
@@ -116,12 +149,12 @@ public class Menu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_uploadActionPerformed
         JFileChooserMain open = null;  
         open = new JFileChooserMain();
         open.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_uploadActionPerformed
 
     private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
         int respuesta= JOptionPane.showConfirmDialog(null,"Seguro quiere salir cerrar sesión?","Salir",JOptionPane.YES_NO_OPTION);
@@ -132,6 +165,13 @@ public class Menu extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_AtrasActionPerformed
+
+    private void btn_optionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_optionActionPerformed
+        crearConexionFTP open = null;
+        open = new crearConexionFTP();
+        open.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_optionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,6 +204,7 @@ public class Menu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Menu().setVisible(true);
+                
             }
         });
     }
@@ -171,7 +212,8 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Atras;
     private javax.swing.JLabel Logo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_option;
+    private javax.swing.JButton btn_upload;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

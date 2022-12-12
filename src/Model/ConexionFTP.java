@@ -95,31 +95,6 @@ public class ConexionFTP {
         }
     }
     
-    public void descargarArchivo(){
-        try {
-            client.enterLocalPassiveMode();
-            client.setFileType(FTP.BINARY_FILE_TYPE);
- 
-             //APPROACH #1: using retrieveFile(String, OutputStream)
-            String remoteFile1 = "presupuesto.docx"; //Solo se coloca el nombre del archivo, no hace falta con la ruta completa
-            File downloadFile1 = new File("C:\\Users\\Ricardo Fanghella\\Documents\\Proyecto\\presupuesto.docx"); //Donde voy a guardar el archivo
-            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
-            boolean success = client.retrieveFile(remoteFile1, outputStream1);
-            outputStream1.close();
- 
-            if (success) {
-                System.out.println("El archivo ha sido descargado con exito");
-            }else{
-                System.out.println("Falla.");
-            }
-
-           
-           
-        }catch (IOException io){
-            System.out.println(io);
-        }
-    }
-    
     public void crearCarpeta(){
         String dirToCreate = "/upload123";
             boolean success;
@@ -136,4 +111,61 @@ public class ConexionFTP {
             Logger.getLogger(ConexionFTP.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    //Esto me funcionara para poder descargar lo que este en el servidor
+    //nuevo.descargarArchivo("C:\\Users\\Angel\\Desktop\\REPO_REDES_PROYECTO\\Carpeta_Conexion_FTP\\","Simio3DStatus.log");
+    //nuevo.listar_archivos_en_servidor();
+    
+    public static void descargarArchivo(String carpeta_en_pc_que_descarga, String fileName_in_ftp) throws FileNotFoundException, IOException{
+        String nombre_completo = carpeta_en_pc_que_descarga + fileName_in_ftp;
+        System.out.println(nombre_completo);
+        try ( //fos = new FileOutputStream(localFile);
+                
+            BufferedOutputStream buffOut = new BufferedOutputStream(new FileOutputStream(nombre_completo))) {
+            if (client.retrieveFile(fileName_in_ftp, buffOut)) {
+                System.out.println("El archivo ha sido descargado con exito!!");
+            } else {
+                System.out.println("Error en la descarga.");
+            }
+        }catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+    }
+}
+    
+    public void listar_archivos_en_servidor(){
+        try {
+                client.enterLocalPassiveMode();
+                client.setFileType(FTP.BINARY_FILE_TYPE);
+ 
+                FTPFile[] archivos = client.listFiles();
+                System.out.println("\nArchivos en la raíz:");
+                for (FTPFile archivo : archivos) {
+                    System.out.println(archivo.getName());
+                }
+                archivos = client.listFiles("/upload");
+                System.out.println("\nArchivos del directorio `upload`:");
+                for (FTPFile archivo : archivos) {
+                    System.out.println(archivo.getName());
+                }
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+//    public void mostrar_archivos_carpeta(){
+//        String sCarpAct = System.getProperty("user.dir");
+//        File carpeta = new File(sCarpAct);
+//        
+//        String[] listado = carpeta.list();
+//        if (listado == null || listado.length == 0) {
+//            System.out.println("No hay elementos dentro de la carpeta actual");
+//            return;
+//        }
+//        else {
+//            for (int i=0; i< listado.length; i++) {
+//                System.out.println(listado[i]);
+//            }
+//        }
+//    }
 }
