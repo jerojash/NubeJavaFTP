@@ -1,5 +1,7 @@
 
 package Model;
+import Model.view.JFileChooserMain;
+import Model.view.Login;
     import java.io.PrintStream;
     import java.io.IOException;
 
@@ -11,9 +13,9 @@ public class main {
 //        nuevo.conectar();
 //        nuevo.subirArchivo("sss");
 //        nuevo.desconectar();
-
-        ManejoString mn = new ManejoString();
-        
-        System.out.println(mn.getFileName("C:\\Users\\Maria Gabriela\\Desktop\\Carpeta_conexion_FTP"));
+//        nuevo.traer_archivos_de_servidor_ftp();
+        Login open = null;  
+        open = new Login();
+        open.setVisible(true);
     }
 }

@@ -18,7 +18,7 @@ public class ConexionFTP {
     private String ftp; 
     private String user;
     private String password;
-    private String nombre = "";
+
 
     public ConexionFTP(FTPClient client, String ftp, String user, String password) {
         this.client = client;
@@ -38,7 +38,7 @@ public class ConexionFTP {
             boolean login = client.login(user, password);
             if (login){
                 System. out. println("Conectado\n");
-            System.out.println(client.getReplyString());
+                System.out.println(client.getReplyString());
             }else{
                 System. out. println("No conectado\n");
             }
@@ -59,19 +59,15 @@ public class ConexionFTP {
         }
     }
 
-    public void subirArchivo(String file_dir, String local_filepath){
+    public void subirArchivo(String file_dir,String file_name){
         String remote_working_dir_path = "C:\\Users\\Maria Gabriela\\Desktop\\Carpeta_conexion_FTP";
-//        String local_filepath = "C:\\Users\\Angel\\Desktop\\REPO_REDES_PROYECTO\\Carpeta_Conexion_FTP\\hola.txt";
-        //nombre_archivo(file_dir);
-         
-        String remote_filename = "holaCopia.txt";
-
+        
         try {
-            FileInputStream fis = new FileInputStream(local_filepath);
+            FileInputStream fis = new FileInputStream(file_dir);
             client.enterLocalPassiveMode(); // IMPORTANTE!!!! 
             client.setFileType(FTP.BINARY_FILE_TYPE);
             client.changeWorkingDirectory(remote_working_dir_path);
-            boolean uploadFile = client.storeFile(remote_filename,fis);
+            boolean uploadFile = client.storeFile(file_name,fis);
 
             if ( uploadFile == false ) {
                 throw new Exception("Error al subir el fichero");
@@ -80,17 +76,21 @@ public class ConexionFTP {
             }
             fis.close();
         } catch (Exception eFTPClient) {
+            System.err.println("Error: " + eFTPClient.getMessage());
             // Gestionar el error, mostrar pantalla, reescalar excepcion... etc...
         }
     }
     
-    public void nombre_archivo(String file_dir){
-        int cont = 0;
- 
-        for (int x = file_dir.length()-1; x>0; x--){            
-            nombre = String.valueOf(file_dir.charAt(x)) + nombre;
-            System. out. println(file_dir.charAt(x)+"\n");
+    public void traer_archivos_de_servidor_ftp(){
+        try {
+            FTPFile[] archivos = client.listFiles();
+            System.out.println("\nArchivos en la raíz:");
+            for (FTPFile archivo : archivos) {
+                System.out.println(archivo.getName()); 
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ConexionFTP.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System. out. println(nombre);
     }
+ 
 }

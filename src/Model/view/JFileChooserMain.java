@@ -165,9 +165,9 @@ public class JFileChooserMain extends javax.swing.JFrame {
             //Podemos seleccionar SOLO DIRECTORIOS
             //fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             //Podemos seleccionar SOLO ARCHIVOS
-            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            //fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
             //Podemos seleccionar AMBOS DIRECORIOS Y ARCHIVOS
-            //fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             
         //-------------------------------------------
 
@@ -189,13 +189,17 @@ public class JFileChooserMain extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ManejoString localFile = new ManejoString();
         String file_dir = this.ruta.getText();
+        String file_name = localFile.getFileName(file_dir);
         
-        JOptionPane.showMessageDialog(null, localFile.getFileName(file_dir), "mensaje",JOptionPane.INFORMATION_MESSAGE);
-//        
-//        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
-//        nuevo.conectar();
-//        nuevo.subirArchivo(file_dir, localFile.getFileName(file_dir));
-//        nuevo.desconectar();
+        //JOptionPane.showMessageDialog(null, localFile.getFileName(file_dir), "mensaje",JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(null, file_dir, "mensaje",JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(null, file_name, "mensaje",JOptionPane.INFORMATION_MESSAGE);
+
+       
+        ConexionFTP nuevo = new ConexionFTP(new FTPClient(), "192.168.0.103", "Angel", "redes");
+        nuevo.conectar();
+        nuevo.subirArchivo(file_dir, file_name);
+        nuevo.desconectar();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
